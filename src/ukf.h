@@ -66,8 +66,10 @@ public:
 
   ///* Sigma point spreading parameter
   double lambda_;
+  double previous_time_;
 
-
+  MatrixXd R_radar_;
+  MatrixXd R_lidar_;
   /**
    * Constructor
    */
@@ -83,6 +85,27 @@ public:
    * @param meas_package The latest measurement data of either radar or laser
    */
   void ProcessMeasurement(MeasurementPackage meas_package);
+
+  /**
+   * Normalize Angles between -pi and pi
+   * @param angle, the angle to normalize
+   */
+  double AngleNormalization(double angle);
+
+  /**
+   * Creates Sigma Points
+   */
+  MatrixXd AugmentedSigmaPoints(MatrixXd Xsig_aug);
+
+  /**
+   * Predicts Sigma Points
+   */
+  MatrixXd SigmaPointPrediction(MatrixXd Xsig_aug, MatrixXd Xsig_pred_,double delta_t);
+
+  /**
+   * Predicts Mean and Covariance
+   */
+  void PredictMeanAndCovariance(MatrixXd Xsig_pred_);
 
   /**
    * Prediction Predicts sigma points, the state, and the state covariance
